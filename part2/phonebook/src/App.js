@@ -61,6 +61,7 @@ const App = () => {
     const existingPerson = persons.find((person) => person.name === newName);
 
     if (existingPerson) {
+      console.log(existingPerson);
       if (
         window.confirm(
           `${newName} is already in the phonebook. Replace the old number with a new one?`
@@ -74,9 +75,9 @@ const App = () => {
       }
 
       setNotificationMessage({
-        message: `${persons.find(
-          (person) => person.name === newName
-        )}'s number changed`,
+        message: `${
+          persons.find((person) => person.name === newName).name
+        }'s number changed`,
         type: "notification",
       });
       setTimeout(() => {
