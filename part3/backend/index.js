@@ -12,7 +12,7 @@ app.use(morgan("tiny"));
 app.use(express.static("build"));
 
 app.get("/info", (req, res) => {
-  const numberOfEntries = Person.countDocuments({});
+  const numberOfEntries = Person.countDocuments({}).then((number) => number);
   res.send(`The phonebook has info of ${numberOfEntries} people.
   ${new Date()}`);
 });
