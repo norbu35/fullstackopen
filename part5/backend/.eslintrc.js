@@ -5,15 +5,15 @@ module.exports = {
     es2021: true,
     jest: true,
   },
-  extends: "airbnb-base",
+  extends: 'airbnb-base',
   overrides: [],
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 'latest',
   },
   rules: {
-    quotes: ["error", "double"],
-    "no-console": ["error", { allow: ["warn", "error", "log"] }],
-    "no-underscore-dangle": 0,
-    "no-param-reassign": 0,
+    quotes: ['error', 'double'],
+    'no-console': ['error', { allow: ['warn', 'error', 'log'] }],
+    'no-underscore-dangle': 0,
+    'no-param-reassign': 0,
   },
 };

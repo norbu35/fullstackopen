@@ -17,21 +17,21 @@ const Blog = ({ blog, handleLike, user, handleRemove }) => {
   return (
     <div className="blogHeader" style={blogStyle}>
       {blog.title} by {blog.author}
-      <button id="view" onClick={toggleVisibility}>
+      <button id="blog__view" onClick={toggleVisibility}>
         View
       </button>
       <div className="togglable" style={showWhenVisible}>
         {blog.url}
         <br />
         {blog.likes}{' '}
-        <button id="like" onClick={() => handleLike(blog)}>
+        <button id="blog__like" onClick={() => handleLike(blog)}>
           like
         </button>
         <br />
-        {blog.user.name}
+        {blog.user?.name}
         <br />
-        {blog.user.username === user?.username ? (
-          <button id="remove" onClick={() => handleRemove(blog)}>
+        {blog.user?.username === user?.username ? (
+          <button id="blog__remove" onClick={() => handleRemove(blog)}>
             remove
           </button>
         ) : null}

@@ -9,7 +9,7 @@ import loginService from './services/login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({});
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
@@ -40,9 +40,9 @@ const App = () => {
       setPassword('');
       setUsername('');
     } catch (exception) {
-      setMessage('wrong credentials');
+      setMessage({ content: 'wrong credentials', type: 'error' });
       setTimeout(() => {
-        setMessage(null);
+        setMessage({ content: null });
       }, 5000);
     }
   };
@@ -63,7 +63,7 @@ const App = () => {
   const addBlog = async (blogObject) => {
     blogFormRef.current.toggleVisibility();
     const res = await blogService.create(blogObject);
-    setMessage(`Created '${res.title}'`);
+    setMessage({ content: `Created '${res.title}'`, type: 'notification' });
     setTimeout(() => {
       setMessage(null);
     }, 5000);
@@ -71,11 +71,14 @@ const App = () => {
 
   const showBlogs = () => {
     return (
-      <div>
+      <div className="user-panel">
         <h2>blogs</h2>
         {user ? (
           <p>
-            {user.name} logged in <button onClick={handleLogout}>Logout</button>
+            {user.name} logged in{' '}
+            <button id="user__logout" onClick={handleLogout}>
+              Logout
+            </button>
           </p>
         ) : null}
         {blogs
@@ -106,7 +109,7 @@ const App = () => {
 
   const loginForm = () => {
     return (
-      <Togglable buttonLabel="login">
+      <Togglable buttonLabel="login" startVisible={true}>
         <LoginForm
           username={username}
           password={password}

@@ -18,6 +18,7 @@ const LoginForm = ({
           <input
             type="text"
             name="Username"
+            id="login__input__username"
             value={username}
             onChange={handleUsernameChange}
           />
@@ -27,18 +28,21 @@ const LoginForm = ({
           <input
             type="password"
             name="Password"
+            id="login__input__password"
             value={password}
             onChange={handlePasswordChange}
           />
         </div>
-        <button type="submit">Login</button>
+        <button id="login__button" type="submit">
+          Login
+        </button>
       </form>
     </div>
   );
 };
 
 LoginForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
   handleUsernameChange: PropTypes.func.isRequired,
   handlePasswordChange: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
