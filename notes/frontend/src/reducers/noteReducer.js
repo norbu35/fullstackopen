@@ -8,7 +8,6 @@ const noteSlice = createSlice({
       state.push(action.payload);
     },
     toggleImportanceOf(state, action) {
-      const id = action.payload;
       const noteToChange = state.find((note) => note.id === id);
       changedNote = {
         ...noteToChange,
