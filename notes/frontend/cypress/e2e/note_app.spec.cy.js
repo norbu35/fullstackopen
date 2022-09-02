@@ -53,7 +53,8 @@ describe('Note app', function () {
 
     describe('and several notes exist', function () {
       it('one of those can be made important', function () {
-        cy.contains('second note').parent().find('button').click();
+        cy.contains('second note').parent().find('button').as('theButton');
+        cy.get('@theButton').click();
 
         cy.contains('second note').parent().find('button').click();
       });
