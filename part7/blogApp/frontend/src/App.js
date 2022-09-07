@@ -1,33 +1,25 @@
 // Libraries
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Outlet } from 'react-router-dom';
 // Components
-import Blog from './components/Blog';
-import BlogForm from './components/BlogForm';
-import LoginForm from './components/LoginForm';
-import Notification from './components/Notification';
-import Togglable from './components/Togglable';
-// Services
-import blogsService from './services/blogs';
+import BlogForm from './components/BlogFormComponent';
+import LoginForm from './components/LoginFormComponent';
+import Notification from './components/NotificationComponent';
+import Togglable from './components/TogglableComponent';
 // Reducers
 import {
   setNotification,
   clearNotification,
 } from './reducers/notificationReducer';
-import {
-  initializeBlogs,
-  likeBlog,
-  removeBlog,
-  createBlog,
-} from './reducers/blogsReducer';
+import { initializeBlogs, createBlog } from './reducers/blogsReducer';
 import { login, setUser } from './reducers/userReducer';
+// Services
+import blogsService from './services/blogsService';
+import Navigation from './components/NavigationComponent';
 
 const App = () => {
-  const user = useSelector(({ user }) => user);
-  const blogs = useSelector(({ blogs }) => {
-    const blogsCopy = blogs.slice();
-    return blogsCopy.sort((a, b) => b.likes - a.likes);
-  });
+  const loggedUser = useSelector(({ user }) => user);
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -41,9 +33,9 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      dispatch(setUser(user));
-      blogsService.setToken(user.token);
+      const loggedUser = JSON.parse(loggedUserJSON);
+      dispatch(setUser(loggedUser));
+      blogsService.setToken(loggedUser.token);
     }
   }, []);
 
@@ -55,15 +47,13 @@ const App = () => {
   };
 
   const handleLogin = async (event) => {
-    event.preventDefault();
-    setPassword('');
-    setUsername('');
     try {
+      event.preventDefault();
       dispatch(login(username, password));
-      blogsService.setToken(user.token);
-      window.localStorage.setItem('loggedUser', JSON.stringify(user));
-    } catch (err) {
-      setNotificationDuration('invalid username or password', 'error', 5);
+      setPassword('');
+      setUsername('');
+    } catch {
+      setNotificationDuration('', 'error', 5);
     }
   };
 
@@ -75,50 +65,10 @@ const App = () => {
     setPassword(target.value);
   };
 
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedUser');
-    window.location.reload();
-  };
-
   const addBlog = async (blog) => {
     blogFormRef.current.toggleVisibility();
     dispatch(createBlog(blog));
     setNotificationDuration(`Added blog ${blog.title}`, 'notification', 5);
-  };
-
-  const showBlogs = () => {
-    return (
-      <div className="user-panel">
-        <h2>blogs</h2>
-        {user ? (
-          <p>
-            {user.username} logged in{' '}
-            <button id="user__logout" onClick={handleLogout}>
-              Logout
-            </button>
-          </p>
-        ) : null}
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            user={user}
-            handleLike={handleLike}
-            handleRemove={handleRemove}
-          />
-        ))}
-      </div>
-    );
-  };
-
-  const handleLike = (blog) => {
-    dispatch(likeBlog(blog));
-  };
-
-  const handleRemove = async (blog) => {
-    if (window.confirm(`Remove '${blog.title} by ${blog.author}`)) {
-      dispatch(removeBlog(blog));
-    }
   };
 
   const loginForm = () => {
@@ -137,17 +87,19 @@ const App = () => {
 
   const blogForm = () => {
     return (
-      <Togglable buttonLabel="add blog" ref={blogFormRef}>
+      <Togglable buttonLabel="Add Blog" ref={blogFormRef}>
         <BlogForm addBlog={addBlog} />
       </Togglable>
     );
   };
+
   return (
-    <div>
+    <div className="container">
+      <Navigation />
       <Notification />
-      {showBlogs()}
-      {user ? blogForm() : null}
-      {user ? null : loginForm()}
+      {loggedUser ? blogForm() : null}
+      {loggedUser ? null : loginForm()}
+      {loggedUser ? <Outlet /> : null}
     </div>
   );
 };

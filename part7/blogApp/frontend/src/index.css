@@ -1,0 +1,23 @@
+ul {
+  padding-left: 0;
+}
+.navbar {
+  padding: 0 2em;
+  background: lightgrey;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar__list {
+  display: flex;
+  list-style-type: none;
+  justify-content: flex-start;
+}
+
+.navbar__list > li {
+  margin-left: 1em;
+}
+
+.blogs__list {
+  list-style-type: none;
+}
