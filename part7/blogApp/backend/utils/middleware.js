@@ -12,7 +12,7 @@ const tokenExractor = (req, res, next) => {
 
 const userExtractor = (req, res, next) => {
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
-  req.user = decodedToken.id;
+  req.userId = decodedToken.id;
 
   return next();
 };

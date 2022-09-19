@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 require('express-async-errors');
 require('dotenv').config();
 
-const blogsRouter = require('./controllers/blogs');
-const userRouter = require('./controllers/users');
-const loginRouter = require('./controllers/login');
+const blogsRouter = require('./controllers/blogsController');
+const userRouter = require('./controllers/usersController');
+const loginRouter = require('./controllers/loginController');
 
 const { MongoUrl } = require('./utils/config');
 const { info, error } = require('./utils/logger');
