@@ -5,13 +5,10 @@ import AuthService from './utils/authService';
 import createDataLoaders from './utils/createDataLoaders';
 import logger from './utils/logger';
 import { resolvers, typeDefs } from './graphql/schema';
-
 const apolloErrorFormatter = (error) => {
   logger.error(error);
-
   const { originalError } = error;
   const isGraphQLError = !(originalError instanceof Error);
-
   let normalizedError = new ApolloError(
     'Something went wrong',
     'INTERNAL_SERVER_ERROR',
@@ -25,7 +22,6 @@ const apolloErrorFormatter = (error) => {
 
   return normalizedError;
 };
-
 const createApolloServer = () => {
   return new ApolloServer({
     resolvers,
